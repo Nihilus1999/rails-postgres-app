@@ -50,7 +50,7 @@ npm -v
 
 ## Variables de entorno
 
-Este frontend usa la variable:
+Usa `.env.example` como plantilla para crear tu archivo `.env` local y completar tus credenciales reales de base de datos. Este frontend usa la variable:
 
 - `VITE_LOCAL_HOST` → URL base del backend (usada en `src/configs/axios/index.js`).
 

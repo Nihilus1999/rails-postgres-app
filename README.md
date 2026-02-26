@@ -33,6 +33,26 @@ Incluye reglas de negocio y validaciones de dominio (junto con validacion de num
 - PostgreSQL 14+
 - Node.js/npm (para el funcionamiento del frontend)
 
+## Variables de entorno
+
+Usa `.env.example` como plantilla para crear tu archivo `.env` local y completar tus credenciales reales de base de datos.
+
+Debes definir tus datos de PostgreSQL en `.env` con base en este ejemplo:
+
+```dotenv
+POSTGRES_USER=tu_usuario_de_postgres
+POSTGRES_PASSWORD=tu_contraseña_de_postgres
+POSTGRES_HOST=localhost
+```
+
+Además, agrega la versión de Ruby usada por el proyecto:
+
+```dotenv
+RUBY_VERSION=3.3.6
+```
+
+> Recomendado: usar el mismo valor para evitar incompatibilidades al instalar gems o ejecutar Rails.
+
 ---
 
 ## Instalación (Linux)
