@@ -1,9 +1,9 @@
 export const email_regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 export const phone_regex = /^04(12|14|16|24|26)\d{7}$/;
 export const name_regex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
-export const cedula_regex = /^\d{1,8}$/;
-export const RIF_REGEX = /^[VEJPGC]-?\d{8}-?\d$/i;
-export const PASSPORT_REGEX = /^[a-zA-Z0-9]{6,9}$/;
+export const ci_regex = /^\d{1,8}$/;
+export const rif_regex = /^[VEJPGC]-?\d{8}-?\d$/i;
+export const passport_regex = /^[a-zA-Z0-9]{6,9}$/;
 
 export const validations_messages = {
   required: "Requerido",
@@ -25,15 +25,15 @@ export function validateDocumentNumberByType(documentNumber, documentTypeName) {
   const type = documentTypeName.toLowerCase();
 
   if (type === "cédula" || type === "cedula") {
-    return cedula_regex.test(documentNumber) || validations_messages.cedula;
+    return ci_regex.test(documentNumber) || validations_messages.cedula;
   }
 
   if (type === "rif") {
-    return RIF_REGEX.test(documentNumber) || validations_messages.rif;
+    return rif_regex.test(documentNumber) || validations_messages.rif;
   }
 
   if (type === "pasaporte") {
-    return PASSPORT_REGEX.test(documentNumber) || validations_messages.passport;
+    return passport_regex.test(documentNumber) || validations_messages.passport;
   }
 
   return true;

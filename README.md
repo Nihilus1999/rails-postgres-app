@@ -14,7 +14,7 @@ API/backend para gestionar:
 - Tipos de documento
 - Usuarios
 
-Incluye reglas de negocio y validaciones de dominio (incluyendo reglas recientes para documentos y teléfonos en formato venezolano).
+Incluye reglas de negocio y validaciones de dominio (junto con validacion de numero de telefono, correo, nombres, etc).
 
 ---
 
@@ -26,21 +26,12 @@ Incluye reglas de negocio y validaciones de dominio (incluyendo reglas recientes
 - Puma
 - rack-cors
 
-### Gems de soporte
-
-- `brakeman`, `bundler-audit`
-- `rubocop-rails-omakase`
-- `debug`, `web-console`
-- `capybara`, `selenium-webdriver`
-
----
-
 ## Requisitos (Linux)
 
 - Ruby 3.3.x
 - Bundler
 - PostgreSQL 14+
-- Node.js/npm (solo si también vas a trabajar frontend)
+- Node.js/npm (para el funcionamiento del frontend)
 
 ---
 
@@ -61,15 +52,15 @@ sudo service postgresql start
 Crea y prepara base de datos:
 
 ```bash
-bin/rails db:create
-bin/rails db:migrate
-bin/rails db:seed
+rails db:create
+rails db:migrate
+rails db:seed
 ```
 
 Levanta servidor Rails:
 
 ```bash
-bin/rails server
+rails server
 ```
 
 Disponible en:
@@ -85,8 +76,8 @@ Revisen el readme dentro de la carpeta frontend para poder instalar y configurar
 ## Comandos útiles
 
 ```bash
-bin/rails test
-bin/rails console
-bin/rails routes
-bin/rails db:migrate:status
+rails test
+rails console
+rails routes
+rails db:migrate:status
 ```
