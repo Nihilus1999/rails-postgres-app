@@ -1,9 +1,15 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
+# Limpiamos las tablas por si ejecutamos el comando varias veces
+User.destroy_all
+DocumentType.destroy_all
+PersonType.destroy_all
+
+# Creamos los Tipos de Persona
+natural = PersonType.create!(name: "Natural")
+juridica = PersonType.create!(name: "Jurídica")
+
+# Creamos los Tipos de Documento asignados a su Tipo de Persona
+DocumentType.create!(name: "Cédula", person_type: natural)
+DocumentType.create!(name: "Pasaporte", person_type: natural)
+DocumentType.create!(name: "RIF", person_type: juridica)
+
+puts "¡Tipos de Persona y Documentos creados con éxito!"

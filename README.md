@@ -1,129 +1,88 @@
-# 🚀 Rails Postgres App
+# Rails Postgres App (Backend Ruby on Rails)
 
-Este repositorio contiene el código para el desarrollo del proyecto. El entorno está configurado para funcionar de manera óptima bajo **WSL2 (Ubuntu en Windows)**, utilizando PostgreSQL como motor de base de datos.
+Backend del sistema de gestión de usuarios con Ruby on Rails + PostgreSQL.
+
+Este README está pensado para **Linux (Ubuntu/Debian y derivados)**.
 
 ---
 
-## 🛠️ Pasos diarios para iniciar el entorno (Workflow en WSL)
+## Resumen del proyecto
 
-Dado que los servicios de Linux se detienen al apagar Windows, sigue estos pasos cada vez que inicies una sesión de trabajo:
+API/backend para gestionar:
 
-1. **Abre tu terminal de Ubuntu.**
+- Tipos de persona
+- Tipos de documento
+- Usuarios
 
-2. **Navega a la carpeta del proyecto:**
+Incluye reglas de negocio y validaciones de dominio (incluyendo reglas recientes para documentos y teléfonos en formato venezolano).
+
+---
+
+## Stack backend
+
+- Ruby `3.3.6`
+- Rails `~> 8.1.2`
+- PostgreSQL (`pg`)
+- Puma
+- rack-cors
+
+### Gems de soporte
+
+- `brakeman`, `bundler-audit`
+- `rubocop-rails-omakase`
+- `debug`, `web-console`
+- `capybara`, `selenium-webdriver`
+
+---
+
+## Requisitos (Linux)
+
+- Ruby 3.3.x
+- Bundler
+- PostgreSQL 14+
+- Node.js/npm (solo si también vas a trabajar frontend)
+
+---
+
+## Instalación (Linux)
+
+Desde la raíz del proyecto:
+
 ```bash
-cd ~/rails-postgres-app
+bundle install
 ```
 
-3. **Abre el proyecto en Visual Studio Code:**
-```bash
-code .
-```
+Inicia PostgreSQL:
 
-4. **En la terminal integrada de VS Code, levanta el servicio de PostgreSQL:**
 ```bash
 sudo service postgresql start
 ```
 
-5. **Levanta el servidor web de Rails:**
+Crea y prepara base de datos:
+
 ```bash
-rails server
+bin/rails db:create
+bin/rails db:migrate
+bin/rails db:seed
 ```
 
-6. **Accede desde el navegador (en Windows):**
+Levanta servidor Rails:
 
-Abre: http://localhost:3000
+```bash
+bin/rails server
+```
+
+Disponible en:
+
+- `http://localhost:3000`
 
 ---
 
-## ⚙️ Requisitos del Sistema
-
-- Ruby: 3.3.6
-- Framework: Ruby on Rails 8.x
-- Base de datos: PostgreSQL 16+
-- Entorno: WSL2 (Ubuntu 24.04 recomendado)
-
----
-
-## 🗄️ Configuración de la Base de Datos
-
-El proyecto utiliza dos bases de datos principales:
-
-- rails_postgres_app_development
-- rails_postgres_app_test
-
-Si es la primera vez que configuras el proyecto o has reseteado el entorno, ejecuta:
+## Comandos útiles
 
 ```bash
-rails db:create   # Crea las bases de datos definidas en database.yml
-rails db:migrate  # Aplica las migraciones de las tablas
-rails db:seed     # (Opcional) Carga datos de prueba iniciales
+bin/rails test
+bin/rails console
+bin/rails routes
+bin/rails db:migrate:status
 ```
-
----
-
-## 👁️ Visualización de Datos (VS Code)
-
-Para ver las tablas de forma visual sin salir del editor:
-
-1. Instala la extensión "Database Client"
-2. Conecta con los siguientes parámetros:
-
-- Host: localhost
-- User: postgres
-- Pass: 990113
-- Port: 5432
-
----
-
-## Comandos Rápidos (Cheat Sheet)
-
-Generadores
-
-- Crear un Scaffold (CRUD completo):
-```bash
-rails g scaffold Nombre modelo:string precio:decimal
-```
-
-- Crear un Modelo:
-```bash
-rails g model Nombre atributo:tipo
-```
-
-- Crear un Controlador:
-```bash
-rails g controller Nombres index show
-```
-
-Base de Datos
-
-- Crear Migración:
-```bash
-rails g migration AddFieldToTable field:string
-```
-
-- Deshacer última migración:
-```bash
-rails db:rollback
-```
-
-- Estado de migraciones:
-```bash
-rails db:migrate:status
-```
-
-Consola y Pruebas
-
-- Consola interactiva:
-```bash
-rails c
-```
-
-- Ejecutar pruebas:
-```bash
-rails test
-```
-
----
-
-Notas: adapta las rutas y credenciales según tu entorno local y las variables de `config/database.yml` si usas usuarios/puertos/contraseñas distintos.

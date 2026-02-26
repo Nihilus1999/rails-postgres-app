@@ -1,0 +1,23 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  person_type: one
+  document_type: one
+  document_number: MyString
+  document_issue_date: 2026-02-25
+  document_expiration_date: 2026-02-25
+  name: MyString
+  email: MyString
+  primary_phone: MyString
+  secondary_phone: MyString
+
+two:
+  person_type: two
+  document_type: two
+  document_number: MyString
+  document_issue_date: 2026-02-25
+  document_expiration_date: 2026-02-25
+  name: MyString
+  email: MyString
+  primary_phone: MyString
+  secondary_phone: MyString

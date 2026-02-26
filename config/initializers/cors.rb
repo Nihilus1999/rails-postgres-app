@@ -1,12 +1,11 @@
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    # "origins" define quién tiene permiso. 
-    # "*" permite a cualquier aplicación (útil para desarrollo).
-    # Si quieres ser específico, usa "http://localhost:5173" (Vite/React).
-    origins "*" 
+    # Aquí le decimos que permita peticiones desde cualquier origen ("*").
+    # Para entorno de desarrollo local, esto es lo más rápido y seguro para no tener bloqueos.
+    origins "*"
 
     resource "*",
       headers: :any,
-      methods: [:get, :post, :put, :patch, :delete, :options, :head]
+      methods: [ :get, :post, :put, :patch, :delete, :options, :head ]
   end
 end
