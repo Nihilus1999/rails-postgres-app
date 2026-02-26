@@ -1,4 +1,4 @@
-# Rails Postgres App (Backend Ruby on Rails)
+# Rails with PostgreSQL (Backend Ruby on Rails)
 
 Backend del sistema de gestión de usuarios con Ruby on Rails + PostgreSQL.
 
