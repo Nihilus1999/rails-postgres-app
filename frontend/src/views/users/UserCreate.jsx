@@ -10,10 +10,10 @@ import { createUser } from "@/services/user";
 import { getPersonTypes, getDocumentTypes } from "@/services/catalogs";
 import GlobalSnackbar from "@/views/components/GlobalSnackbar.jsx";
 import {
-  EMAIL_REGEX,
-  PHONE_REGEX,
-  NAME_REGEX,
-  VALIDATION_MESSAGES,
+  email_regex,
+  phone_regex,
+  name_regex,
+  validations_messages,
   validateDocumentNumberByType,
   validateIssueDateNotFuture,
   validateExpirationDateAfterIssue,
@@ -163,7 +163,7 @@ export default function UserCreate() {
                     <Controller
                       name="person_type_id"
                       control={control}
-                      rules={{ required: VALIDATION_MESSAGES.required }}
+                      rules={{ required: validations_messages.required }}
                       render={({ field, fieldState: { error } }) => (
                         <TextField
                           {...field}
@@ -204,7 +204,7 @@ export default function UserCreate() {
                       name="document_type_id"
                       control={control}
                       rules={{
-                        required: VALIDATION_MESSAGES.required,
+                        required: validations_messages.required,
                         validate: (value) => validateDocumentTypeByPersonType(
                           value,
                           selectedPersonTypeId,
@@ -250,7 +250,7 @@ export default function UserCreate() {
                       helperText={errors.document_number?.message || " "}
                       sx={textFieldSx}
                       {...register("document_number", {
-                        required: VALIDATION_MESSAGES.required,
+                        required: validations_messages.required,
                         validate: (value) => validateDocumentNumberByType(value, selectedDocumentType?.name),
                       })}
                     />
@@ -272,10 +272,10 @@ export default function UserCreate() {
                       helperText={errors.name?.message || " "}
                       sx={textFieldSx}
                       {...register("name", {
-                        required: VALIDATION_MESSAGES.required,
+                        required: validations_messages.required,
                         pattern: {
-                          value: NAME_REGEX,
-                          message: VALIDATION_MESSAGES.name,
+                          value: name_regex,
+                          message: validations_messages.name,
                         },
                       })}
                     />
@@ -292,10 +292,10 @@ export default function UserCreate() {
                       helperText={errors.email?.message || " "}
                       sx={textFieldSx}
                       {...register("email", {
-                        required: VALIDATION_MESSAGES.required,
+                        required: validations_messages.required,
                         pattern: {
-                          value: EMAIL_REGEX,
-                          message: VALIDATION_MESSAGES.email,
+                          value: email_regex,
+                          message: validations_messages.email,
                         },
                       })}
                     />
@@ -313,10 +313,10 @@ export default function UserCreate() {
                       helperText={errors.primary_phone?.message || " "}
                       sx={textFieldSx}
                       {...register("primary_phone", {
-                        required: VALIDATION_MESSAGES.required,
+                        required: validations_messages.required,
                         pattern: {
-                          value: PHONE_REGEX,
-                          message: VALIDATION_MESSAGES.phone,
+                          value: phone_regex,
+                          message: validations_messages.phone,
                         },
                       })}
                     />
@@ -332,7 +332,7 @@ export default function UserCreate() {
                       sx={textFieldSx}
                       {...register("secondary_phone", {
                         validate: (value) => (
-                          !value || PHONE_REGEX.test(value) || VALIDATION_MESSAGES.phone
+                          !value || phone_regex.test(value) || validations_messages.phone
                         ),
                       })}
                     />
@@ -356,7 +356,7 @@ export default function UserCreate() {
                       helperText={errors.document_issue_date?.message || " "}
                       sx={textFieldSx}
                       {...register("document_issue_date", {
-                        required: VALIDATION_MESSAGES.required,
+                        required: validations_messages.required,
                         validate: validateIssueDateNotFuture,
                       })}
                     />
@@ -374,7 +374,7 @@ export default function UserCreate() {
                       helperText={errors.document_expiration_date?.message || " "}
                       sx={textFieldSx}
                       {...register("document_expiration_date", {
-                        required: VALIDATION_MESSAGES.required,
+                        required: validations_messages.required,
                         validate: (value) => validateExpirationDateAfterIssue(
                           value,
                           getValues("document_issue_date"),

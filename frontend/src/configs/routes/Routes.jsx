@@ -1,10 +1,15 @@
 // src/configs/routes/Routes.jsx
 import { Navigate } from "react-router-dom";
+import Home from "@/views/home/Home.jsx";
 import UserList from "@/views/users/UserList.jsx";
 import UserCreate from "@/views/users/UserCreate";
 
 const Routes = [
-  { path: "/", element: <Navigate to="/users" replace /> },
+  {
+    path: "/",
+    access: ["public"],
+    element: <Home />,
+  },
 
   // --- Módulo de Usuarios ---
   {

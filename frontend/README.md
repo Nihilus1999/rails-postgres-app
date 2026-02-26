@@ -56,7 +56,7 @@ Desde la carpeta `frontend`:
 
 ```bash
 npm install
-npm run dev
+npm run frontend
 ```
 
 ## Variables de entorno
@@ -78,17 +78,6 @@ App disponible en:
 - `http://localhost:5173`
 
 > Asegúrate de tener el backend Rails corriendo para consumir la API.
-
----
-
-## Scripts disponibles
-
-```bash
-npm run frontend  # servidor de desarrollo
-npm run build     # build de producción
-npm run preview   # previsualizar build
-npm run lint      # ejecutar linter
-```
 
 ---
 

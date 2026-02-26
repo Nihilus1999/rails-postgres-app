@@ -13,14 +13,13 @@ import {
   DialogContent,
   DialogActions,
   Button,
-  Stack,
   Typography,
-  Divider,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import TableDesign from "@/views/components/TableDesign";
+import UserDetailsModal from "@/views/components/UserDetailsModal";
 import { getUsers, deleteUser } from "@/services/user";
 
 const UserList = () => {
@@ -31,6 +30,8 @@ const UserList = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [openDetails, setOpenDetails] = useState(false);
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [userToDelete, setUserToDelete] = useState(null);
 
   useEffect(() => {
     fetchUsers();
@@ -43,7 +44,8 @@ const UserList = () => {
 
       const userRows = response.data.map((item) => ({
         id: item.id,
-        documento: `${item.document_type?.name || ""} - ${item.document_number}`,
+        tipoDocumento: item.document_type?.name || "N/A",
+        numeroDocumento: item.document_number || "N/A",
         nombre: item.name,
         correo: item.email,
         telefono: item.primary_phone,
@@ -67,21 +69,31 @@ const UserList = () => {
     }
   };
 
-  const handleDelete = async (id) => {
-    if (window.confirm("¿Estás seguro de que deseas eliminar este usuario?")) {
-      try {
-        // Llamamos directamente a nuestro servicio refactorizado
-        const response = await deleteUser(id);
-        setRows(rows.filter((row) => row.id !== id));
+  const handleOpenDeleteConfirm = (user) => {
+    setUserToDelete(user);
+    setDeleteConfirmOpen(true);
+  };
 
-        setSuccessMsg(response.message);
-        setError("");
-        setSnackbarOpen(true);
-      } catch (err) {
-        setError(err.message);
-        setSuccessMsg("");
-        setSnackbarOpen(true);
-      }
+  const handleCloseDeleteConfirm = () => {
+    setDeleteConfirmOpen(false);
+    setUserToDelete(null);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!userToDelete) return;
+
+    try {
+      const response = await deleteUser(userToDelete.id);
+      setRows((prevRows) => prevRows.filter((row) => row.id !== userToDelete.id));
+      setSuccessMsg(response.message);
+      setError("");
+      setSnackbarOpen(true);
+    } catch (err) {
+      setError(err.message);
+      setSuccessMsg("");
+      setSnackbarOpen(true);
+    } finally {
+      handleCloseDeleteConfirm();
     }
   };
 
@@ -100,17 +112,18 @@ const UserList = () => {
     setSelectedUser(null);
   };
 
-  const formatDate = (value) => {
-    if (!value || value === "N/A") return "N/A";
-    const date = new Date(value);
-    if (Number.isNaN(date.getTime())) return value;
-    return date.toLocaleDateString("es-EC", { year: "numeric", month: "2-digit", day: "2-digit" });
-  };
-
   const columns = [
     {
-      field: "documento",
-      headerName: "Documento",
+      field: "tipoDocumento",
+      headerName: "Tipo Documento",
+      flex: 1,
+      minWidth: 170,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "numeroDocumento",
+      headerName: "N° Documento",
       flex: 1,
       minWidth: 150,
       align: "center",
@@ -186,7 +199,7 @@ const UserList = () => {
           </Tooltip>
           <Tooltip title="Eliminar" arrow>
             <IconButton
-            onClick={() => handleDelete(params.row.id)}
+            onClick={() => handleOpenDeleteConfirm(params.row)}
             size="small"
             sx={{
               border: "1px solid rgba(211, 47, 47, 0.25)",
@@ -238,96 +251,52 @@ const UserList = () => {
         </Alert>
       </Snackbar>
 
-      <Dialog
+      <UserDetailsModal
         open={openDetails}
         onClose={handleCloseDetails}
+        user={selectedUser}
+      />
+
+      <Dialog
+        open={deleteConfirmOpen}
+        onClose={handleCloseDeleteConfirm}
+        maxWidth="xs"
         fullWidth
-        maxWidth="md"
         PaperProps={{
           sx: {
             borderRadius: 4,
             border: "1px solid rgba(15, 23, 42, 0.12)",
-            boxShadow: "0 20px 45px rgba(15, 23, 42, 0.18)",
           },
         }}
       >
-        <DialogTitle sx={{ pb: 1.5 }}>
-          <Typography variant="h6" fontWeight={800} sx={{ letterSpacing: 0.2 }}>
-            Detalles del Usuario
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Información completa del registro seleccionado.
+        <DialogTitle sx={{ pb: 1 }}>
+          <Typography variant="h6" fontWeight={800}>
+            Confirmar eliminación
           </Typography>
         </DialogTitle>
 
-        <DialogContent dividers sx={{ px: { xs: 2, md: 3 }, py: 2.5 }}>
-          <Stack spacing={2}>
-            <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
-              <Box sx={{ flex: 1 }}>
-                <Typography variant="caption" color="text.secondary">Nombre / Razón social</Typography>
-                <Typography fontWeight={600}>{selectedUser?.nombre || "N/A"}</Typography>
-              </Box>
-              <Box sx={{ flex: 1 }}>
-                <Typography variant="caption" color="text.secondary">Correo</Typography>
-                <Typography fontWeight={600}>{selectedUser?.email || "N/A"}</Typography>
-              </Box>
-            </Stack>
-
-            <Divider />
-
-            <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
-              <Box sx={{ flex: 1 }}>
-                <Typography variant="caption" color="text.secondary">Tipo de Persona</Typography>
-                <Typography fontWeight={600}>{selectedUser?.personTypeName || "N/A"}</Typography>
-              </Box>
-              <Box sx={{ flex: 1 }}>
-                <Typography variant="caption" color="text.secondary">Tipo de Documento</Typography>
-                <Typography fontWeight={600}>{selectedUser?.documentTypeName || "N/A"}</Typography>
-              </Box>
-            </Stack>
-
-            <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
-              <Box sx={{ flex: 1 }}>
-                <Typography variant="caption" color="text.secondary">Número de Documento</Typography>
-                <Typography fontWeight={600}>{selectedUser?.documentNumber || "N/A"}</Typography>
-              </Box>
-              <Box sx={{ flex: 1 }}>
-                <Typography variant="caption" color="text.secondary">Teléfono Principal</Typography>
-                <Typography fontWeight={600}>{selectedUser?.primaryPhone || "N/A"}</Typography>
-              </Box>
-            </Stack>
-
-            <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
-              <Box sx={{ flex: 1 }}>
-                <Typography variant="caption" color="text.secondary">Teléfono Secundario</Typography>
-                <Typography fontWeight={600}>{selectedUser?.secondaryPhone || "N/A"}</Typography>
-              </Box>
-              <Box sx={{ flex: 1 }}>
-                <Typography variant="caption" color="text.secondary">Fecha de Emisión</Typography>
-                <Typography fontWeight={600}>{formatDate(selectedUser?.documentIssueDate)}</Typography>
-              </Box>
-            </Stack>
-
-            <Box>
-              <Typography variant="caption" color="text.secondary">Fecha de Vencimiento</Typography>
-              <Typography fontWeight={600}>{formatDate(selectedUser?.documentExpirationDate)}</Typography>
-            </Box>
-          </Stack>
+        <DialogContent>
+          <Typography variant="body2" color="text.secondary">
+            ¿Estás seguro de que deseas eliminar a <strong>{userToDelete?.nombre || "este usuario"}</strong>?
+          </Typography>
         </DialogContent>
 
-        <DialogActions sx={{ px: 3, py: 2 }}>
+        <DialogActions sx={{ px: 3, pb: 2.5, pt: 1 }}>
           <Button
-            onClick={handleCloseDetails}
-            variant="contained"
-            disableElevation
-            sx={{
-              borderRadius: 999,
-              textTransform: "none",
-              fontWeight: 700,
-              px: 3,
-            }}
+            onClick={handleCloseDeleteConfirm}
+            variant="outlined"
+            sx={{ borderRadius: 999, textTransform: "none", fontWeight: 700 }}
           >
-            Cerrar
+            Cancelar
+          </Button>
+          <Button
+            onClick={handleConfirmDelete}
+            variant="contained"
+            color="error"
+            disableElevation
+            sx={{ borderRadius: 999, textTransform: "none", fontWeight: 700 }}
+          >
+            Eliminar
           </Button>
         </DialogActions>
       </Dialog>

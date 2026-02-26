@@ -4,37 +4,33 @@ class User < ApplicationRecord
 
   VENEZUELAN_MOBILE_PHONE_REGEX = /\A04(12|14|16|24|26)\d{7}\z/
   NAME_ONLY_LETTERS_SPACES_REGEX = /\A[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+\z/
-  CEDULA_REGEX = /\A\d{7}\z/
+  CI_REGEX = /\A\d{1,8}\z/
   RIF_REGEX = /\A[VEJPGC]-?\d{8}-?\d\z/i
   PASSPORT_REGEX = /\A[a-zA-Z0-9]{6,9}\z/
 
-  # 1. Validaciones de presencia obligatoria (todos menos el teléfono secundario)
   validates :document_number, :document_issue_date, :document_expiration_date,
             :name, :email, :primary_phone, presence: true
 
-  # 2. Validación del Correo Electrónico
   validates :email, uniqueness: true, format: {
     with: URI::MailTo::EMAIL_REGEXP,
     message: "debe tener un formato válido (ejemplo: prueba@gmail.com)"
   }
 
-  # 3. Validación del Teléfono (Formato móvil venezolano: 04XX + 7 dígitos)
   validates :primary_phone, format: {
     with: VENEZUELAN_MOBILE_PHONE_REGEX,
     message: "debe tener formato venezolano válido (ej: 04121234567)"
   }
+
   validates :secondary_phone, format: {
     with: VENEZUELAN_MOBILE_PHONE_REGEX,
     message: "debe tener formato venezolano válido (ej: 04121234567)"
-  }, allow_blank: true # Es opcional
+  }, allow_blank: true
 
-  # 4. Validación del Nombre (solo letras, espacios, ñ y acentos)
   validates :name, format: {
     with: NAME_ONLY_LETTERS_SPACES_REGEX,
     message: "solo permite letras y espacios (incluye ñ y acentos)"
   }
 
-  # 5. Reglas de Negocio Customizadas (Distinción de documento y nombre)
   validate :document_matches_person_type
   validate :document_number_by_type
   validate :dates_logic
@@ -42,7 +38,6 @@ class User < ApplicationRecord
   private
 
   def document_matches_person_type
-    # Validamos que el tipo de documento seleccionado pertenezca al tipo de persona
     if document_type.present? && person_type.present?
       if document_type.person_type_id != person_type.id
         errors.add(:document_type, "no es válido para el tipo de persona seleccionado")
@@ -54,9 +49,9 @@ class User < ApplicationRecord
     return if document_number.blank? || document_type.blank?
 
     case document_type.name.to_s.downcase
-    when "cédula", "cedula"
-      unless document_number.match?(CEDULA_REGEX)
-        errors.add(:document_number, "para cédula debe contener exactamente 7 dígitos")
+    when "ci", "cédula", "cedula"
+      unless document_number.match?(CI_REGEX)
+        errors.add(:document_number, "para CI debe contener máximo 8 dígitos numéricos")
       end
     when "rif"
       unless document_number.match?(RIF_REGEX)

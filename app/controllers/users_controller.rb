@@ -1,8 +1,5 @@
 class UsersController < ApplicationController
-  # Como usaremos React (un cliente externo), desactivamos temporalmente la protección CSRF de vistas tradicionales de Rails
   skip_before_action :verify_authenticity_token
-
-  # Esta línea ejecuta la función 'set_user' antes de mostrar, actualizar o eliminar un usuario específico
   before_action :set_user, only: [ :show, :update, :destroy ]
 
   # GET all
