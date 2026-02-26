@@ -3,6 +3,7 @@ import { Navigate } from "react-router-dom";
 import Home from "@/views/home/Home.jsx";
 import UserList from "@/views/users/UserList.jsx";
 import UserCreate from "@/views/users/UserCreate";
+import UserEdit from "@/views/users/UserEdit";
 
 const Routes = [
   {
@@ -21,15 +22,14 @@ const Routes = [
   {
     path: "/users/create",
     access: ["public"],
-    element: <UserCreate />, // Lo crearemos pronto
+    element: <UserCreate />,
   },
-  /*
+
   {
     path: "/users/edit/:id",
     access: ["public"],
-    element: <UserForm />, // Reutilizaremos el mismo formulario
+    element: <UserEdit />,
   },
-  */
   
 
   // 404 - Not Found

@@ -41,6 +41,12 @@ export default function UserCreate() {
 
   const selectedPersonTypeId = watch("person_type_id");
   const selectedDocumentTypeId = watch("document_type_id");
+  const isDocumentNumberDisabled = (
+    loading
+    || catalogsLoading
+    || !selectedPersonTypeId
+    || !selectedDocumentTypeId
+  );
   const filteredDocumentTypes = documentTypes.filter((dt) => String(dt.person_type_id) === String(selectedPersonTypeId));
   const selectedDocumentType = documentTypes.find((dt) => String(dt.id) === String(selectedDocumentTypeId));
 
@@ -245,9 +251,14 @@ export default function UserCreate() {
                       label="Número"
                       fullWidth
                       variant="outlined"
-                      disabled={loading}
+                      disabled={isDocumentNumberDisabled}
                       error={!!errors.document_number}
-                      helperText={errors.document_number?.message || " "}
+                      helperText={
+                        errors.document_number?.message
+                        || (isDocumentNumberDisabled
+                          ? "Selecciona tipo de persona y tipo de documento para habilitar este campo."
+                          : " ")
+                      }
                       sx={textFieldSx}
                       {...register("document_number", {
                         required: validations_messages.required,

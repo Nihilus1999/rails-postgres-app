@@ -74,7 +74,7 @@ const TableDesign = ({
                 py: 1,
               }}
             >
-              Nuevo
+              Registrar usuario
             </Button>
           )}
         </Stack>
