@@ -50,6 +50,7 @@ index.interceptors.response.use(
       case 400: generalMessage = "Datos inválidos. Verifica tu solicitud."; break;
       case 401: generalMessage = "No autenticado. Por favor, inicia sesión nuevamente."; break;
       case 403: generalMessage = "No tienes permisos para realizar esta acción."; break;
+      case 404: generalMessage = "El recurso solicitado no fue encontrado."; break;
       case 422: generalMessage = "Error de validación. Revisa los datos enviados."; break;
       case 500: generalMessage = "Error interno del servidor. Intenta más tarde."; break;
     }

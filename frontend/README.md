@@ -38,7 +38,7 @@ Frontend para gestión de usuarios con:
 
 ## Requisitos (Linux)
 
-- Node.js `18+` (recomendado `20+`)
+- Node.js `18+`
 - npm `9+`
 
 Verifica:
@@ -66,7 +66,7 @@ VITE_LOCAL_HOST=http://localhost:3000
 
 ## Instalación y ejecución (Linux)
 
-Desde la carpeta `frontend`:
+Desde la carpeta `frontend` (coloque cd frontend):
 
 ```bash
 npm install
